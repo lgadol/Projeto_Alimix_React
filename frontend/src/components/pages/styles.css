@@ -1,0 +1,21 @@
+.alimix_saldo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border: 1px solid black;
+    text-align: center;
+    background-color: rgb(28, 61, 133);
+    color: white;
+}
+
+.alimix_movimentacao {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border: 1px solid black;
+    text-align: center;
+    background-color: rgb(28, 61, 133);
+    color: white;
+}

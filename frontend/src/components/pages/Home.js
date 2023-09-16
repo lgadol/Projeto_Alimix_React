@@ -6,33 +6,33 @@ import { fetchCategoria, fetchTipoMovimentacao, fetchTransacao, fetchUsuario, fe
 
 function Home() {
     const navigate = useNavigate();
-    const [data, setData] = useState({
-        categoria: [],
-        tipoMovimentacao: [],
-        transacao: [],
-        usuario: [],
-        saldoMensal: [],
-        saldoAtual: []
-    });
+    const [categoria, setCategoria] = useState([]);
+    const [tipoMovimentacao, setTipoMovimentacao] = useState([]);
+    const [transacao, setTransacao] = useState([]);
+    const [usuario, setUsuario] = useState([]);
+    const [saldoMensal, setSaldoMensal] = useState([]);
+    const [saldoAtual, setSaldoAtual] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
             try {
                 const categoriaData = await fetchCategoria();
-                const tipoMovimentacaoData = await fetchTipoMovimentacao();
-                const transacaoData = await fetchTransacao();
-                const usuarioData = await fetchUsuario();
-                const saldoMensalData = await fetchSaldoMensal();
-                const saldoAtualData = await fetchSaldoAtual();
+                setCategoria(categoriaData);
 
-                setData({
-                    categoria: categoriaData,
-                    tipoMovimentacao: tipoMovimentacaoData,
-                    transacao: transacaoData,
-                    usuario: usuarioData,
-                    saldoMensal: saldoMensalData,
-                    saldoAtual: saldoAtualData
-                });
+                const tipoMovimentacaoData = await fetchTipoMovimentacao();
+                setTipoMovimentacao(tipoMovimentacaoData);
+
+                const transacaoData = await fetchTransacao();
+                setTransacao(transacaoData);
+
+                const usuarioData = await fetchUsuario();
+                setUsuario(usuarioData);
+
+                const saldoMensalData = await fetchSaldoMensal();
+                setSaldoMensal(saldoMensalData);
+
+                const saldoAtualData = await fetchSaldoAtual();
+                setSaldoAtual(saldoAtualData);
             } catch (error) {
                 console.error(error);
             }
@@ -46,18 +46,32 @@ function Home() {
             <div className='content container-fluid'>
                 <div className="row header">
                     <div className="col">
-                        <span>Movimentação</span>
-                        {data.transacao.map((item, index) => (
+                        <strong>Movimentação</strong>
+                        <hr />
+                        <div className='alimix_movimentacao'>
+                            <p>Nome</p>|
+                            <p>Descrição</p>|
+                            <p>Data</p>|
+                            <p>Valor</p>|
+                            <p>CPF</p>
+                        </div>
+                        {transacao.map((item, index) => (
                             <div key={index}>
-                                {/* Exiba as informações que deseja aqui */}
-                                <p>{item.valor}</p>
+                                <p>{item.categoria}</p>
+                                <p>{item.categoria}</p>
+                                <p>{item.categoria}</p>
+                                <p>{item.categoria}</p>
                             </div>
                         ))}
                     </div>
                     <div className="col">
-                        <span>Saldo</span>
-                        {/* Mapeie os dados que deseja exibir aqui */}
-                        {data.saldoAtual.map((item, index) => (
+                        <strong>Saldo</strong>
+                        <hr />
+                        <div className='alimix_saldo'>
+                            <p>Saldo Mensal</p>|
+                            <p>Saldo Atual</p>
+                        </div>
+                        {saldoAtual.map((item, index) => (
                             <div key={index}>
                                 {/* Exiba as informações que deseja aqui */}
                                 <p>{item.entrada}</p>
