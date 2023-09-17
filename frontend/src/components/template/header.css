@@ -40,23 +40,6 @@ header.header-top i {
     font-weight: 300;
 }
 
-.logo {
-    position: absolute;
-    left: 15px;
-    height: auto;
-}
-
-.fa-arrows-alt,
-.fa-compress {
-    font-size: 1.3em;
-    width: 100px;
-    height: 20px;
-    bottom: 5px;
-    background-color: rgb(28, 61, 133);
-    border: none;
-    color: white;
-}
-
 button:hover {
     color: lightblue;
 }
@@ -64,11 +47,6 @@ button:hover {
 @media (max-width: 725px) {
     .header-top {
         display: block !important;
-    }
-
-    .logo {
-        left: 50%;
-        transform: translateX(-50%);
     }
 }
 

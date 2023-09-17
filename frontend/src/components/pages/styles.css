@@ -1,7 +1,11 @@
+body {
+    font-size: 12px;
+}
+
 .alimix_saldo {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 0 20px;
     border: 1px solid black;
     text-align: center;
@@ -9,13 +13,56 @@
     color: white;
 }
 
-.alimix_movimentacao {
+.saldo_atual {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+}
+
+
+.alimix_movimentacao {
     padding: 0 20px;
     border: 1px solid black;
     text-align: center;
     background-color: rgb(28, 61, 133);
     color: white;
+}
+
+.alimix_movimentacao,
+.alimix_transacao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.alimix_movimentacao p,
+.alimix_transacao p {
+    width: 20%;
+}
+
+.col p {
+    margin: 2px;
+}
+
+.alimix_transacao:nth-child(even) {
+    background-color: rgb(229, 232, 238);
+}
+
+.alimix_transacao:hover {
+    background-color: lightgray;
+}
+
+.saldo_mensal:nth-child(even) {
+    background-color: rgb(229, 232, 238);
+}
+
+.saldo_mensal:hover {
+    background-color: lightgray;
+}
+
+.saldo_atual {
+    background-color: rgb(229, 232, 238);
+}
+
+.saldo_atual:hover {
+    background-color: lightgray;
 }
