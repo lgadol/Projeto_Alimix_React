@@ -7,9 +7,9 @@ const app = express();
 app.use(cors());
 
 const projetoucsCONN = createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '09azgope',
+    host: '',
+    user: '',
+    password: '',
     database: 'projetoucs'
 });
 
