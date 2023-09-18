@@ -28,7 +28,7 @@ app.get('/tipomovimentacao', (req, res) => {
 });
 
 app.get('/transacao', (req, res) => {
-    projetoucsCONN.query('SELECT * FROM transacao', (err, rows) => {
+    projetoucsCONN.query('SELECT * FROM transacao order by datahorario desc', (err, rows) => {
         if (err) throw err;
         res.send(rows);
     });
