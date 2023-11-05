@@ -4,6 +4,8 @@ import Main from '../template/main';
 import { useNavigate } from 'react-router-dom';
 import { fetchCategoria, fetchTipoMovimentacao, fetchTransacao, fetchUsuario, fetchSaldoMensal, fetchSaldoAtual } from '../controllers/Api';
 import { format } from 'date-fns';
+import imgCard from "../img/card.jpeg"
+
 
 function Home() {
     const navigate = useNavigate();
@@ -62,98 +64,24 @@ function Home() {
         fetchData();
     }, []);
 
-    function getStyle(saldo) {
-        if (saldo >= 0) {
-            return {
-                color: 'green',
-                backgroundColor: 'lightgreen'
-            };
-        } else {
-            return {
-                color: 'red',
-                backgroundColor: 'lightcoral'
-            };
-        }
-    }
-
     return (
         <Main>
             <div className='content container-fluid'>
-                <div className="row header">
-                    <div className="col">
-                        <strong style={{ fontSize: '15px' }}>Movimentação</strong>
-                        <hr />
-                        <div className='alimix_movimentacao'>
-                            <div className='col'>
-                                <p>Descrição</p>
-                            </div>
-                            <div className='col'>
-                                <p>Tipo</p>
-                            </div>
-                            <div className='col'>
-                                <p>Data</p>
-                            </div>
-                            <div className='col'>
-                                <p>Valor</p>
-                            </div>
-                            <div className='col'>
-                                <p>CPF</p>
-                            </div>
-                        </div>
-                        {transacao.map((item, index) => {
-                            const dataDoBanco = item.datahorario;
-                            const data = new Date(dataDoBanco);
-                            const dataFormatada = format(data, 'dd/MM/yy HH:mm');
-                            const categorias = {
-                                0: "Pagamento Recebido :)",
-                                1: "Alimentação",
-                                2: "Abastecimento",
-                                3: "Lazer",
-                                4: "Saúde"
-                            };
-
-                            return (
-                                <div className='alimix_transacao' key={index}>
-                                    <p>{item.categoria === 0 ? 'Entrada' : 'Saída'}</p>
-                                    <p>{categorias[item.categoria]}</p>
-                                    <p>{dataFormatada}</p>
-                                    <p>{item.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                                    <p>98765432100</p>
-                                </div>
-                            );
-                        })}
-                    </div>
-                    <div className="col">
-                        <strong style={{ fontSize: '15px' }}>Saldo</strong>
-                        <hr />
-                        <div className='alimix_saldo'>
-                            <p>Saldo Mensal</p>
-                        </div>
-                        {saldoMensal.map((item, index) => (
-                            <div className='saldo_mensal' key={index} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <p><strong>Entrada: </strong>{item.entrada.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                                <p><strong>Saída: </strong>{item.saida.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                                <p><strong>Saldo Atual: </strong><span style={getStyle(item.saldo_mensal)}>{item.saldo_mensal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
-                                <p><strong>Data: </strong>{item.mes_ano}</p>
-                            </div>
-                        ))}
-                        <div className='alimix_saldo'>
-                            <p>Saldo Atual</p>
-                        </div>
-                        {saldoAtual.map((item, index) => (
-                            <div className='saldo_atual' key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <p><strong>Entrada: </strong>{item.entrada.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                                <p><strong>Saída: </strong>{item.saida.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                                <p style={{
-                                    borderColor: item.saldo_atual >= 0 ? 'green' : 'red',
-                                    backgroundColor: item.saldo_atual >= 0 ? 'lightgreen' : 'lightcoral',
-                                }}><strong>Saldo Atual: </strong>{item.saldo_atual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                            </div>
-                        ))}
-                    </div>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <img src={imgCard} alt="Imagem do Cartão" width="300" height="200" />
                 </div>
+                <hr />
+                <h1 style={{ display: 'flex', justifyContent: 'center' }}>
+                    Saldo Atual
+                </h1>
+                {saldoAtual.map((item, index) => (
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <h2>{item.saldo_atual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h2>
+                    </div>
+                ))}
             </div>
         </Main>
+
     )
 }
 
