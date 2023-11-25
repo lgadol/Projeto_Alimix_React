@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import "./styles.css";
 import Main from '../template/main';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { fetchCategoria, fetchTipoMovimentacao, fetchTransacao, fetchUsuario, fetchSaldoMensal, fetchSaldoAtual } from '../controllers/Api';
 import { format } from 'date-fns';
-import imgCard from "../img/card.jpeg"
+import imgCard from "../img/card.jpeg";
+import imgLogo from "../img/logo.png";
 
 
 function Home() {
@@ -67,8 +68,30 @@ function Home() {
     return (
         <Main>
             <div className='content container-fluid'>
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <img src={imgCard} alt="Imagem do Cartão" width="300" height="200" />
+                <div style={{ display: 'grid', justifyContent: 'center', gridTemplateColumns: '1fr 1fr 1fr' }}>
+                    <div style={{ gridColumn: '1' }}>
+                        <img src={imgLogo} alt="Logo" width="300" height="200" />
+                    </div>
+                    <div style={{ gridColumn: '2' }}>
+                        <img src={imgCard} alt="Imagem do Cartão" width="300" height="200" />
+                    </div>
+                    <div className='content_button' style={{ display: 'flex', flexDirection: 'column' }}>
+                        <Link to="/home">
+                            <button className='home_button'>
+                                Home
+                            </button>
+                        </Link>
+                        <Link to="/movimentacao">
+                            <button className='mov_button'>
+                                Movimentações
+                            </button>
+                        </Link>
+                        <Link to="/estabelecimentos">
+                            <button className='mov_button'>
+                                Encontrar Estabelecimento
+                            </button>
+                        </Link>
+                    </div>
                 </div>
                 <hr />
                 <h1 style={{ display: 'flex', justifyContent: 'center' }}>

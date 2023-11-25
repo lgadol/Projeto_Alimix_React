@@ -4,6 +4,8 @@ import Main from '../template/main';
 import { useNavigate } from 'react-router-dom';
 import { fetchCategoria, fetchTipoMovimentacao, fetchTransacao, fetchUsuario, fetchSaldoMensal, fetchSaldoAtual } from '../controllers/Api';
 import { format } from 'date-fns';
+import { Bar } from 'react-chartjs-2';
+import axios from 'axios';
 
 function Movimentacao() {
     const navigate = useNavigate();
@@ -13,6 +15,7 @@ function Movimentacao() {
     const [usuario, setUsuario] = useState([]);
     const [saldoMensal, setSaldoMensal] = useState([]);
     const [saldoAtual, setSaldoAtual] = useState([]);
+    const [chartData, setChartData] = useState({});
 
     useEffect(() => {
         async function fetchData() {
@@ -150,6 +153,32 @@ function Movimentacao() {
                                 }}><strong>Saldo Atual: </strong>{item.saldo_atual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                             </div>
                         ))}
+                        <div className='alimix_saldo'>
+                            <p>Gráfico de compras útlimos 30 dias</p>
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <div className='alimix_saldo'>
+                            <p>Gráfico de categoria de compras</p>
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
                     </div>
                 </div>
             </div>
