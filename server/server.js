@@ -1,19 +1,32 @@
 import express from 'express';
 import cors from 'cors';
-import { createConnection } from 'mysql';
+import axios from 'axios';
 
 const app = express();
 
 app.use(cors());
 
-const projetoucsCONN = createConnection({
-    host: '',
-    user: '',
-    password: '',
-    database: 'projetoucs'
+app.get('/todasmovimentacoes', async (req, res) => {
+    try {
+        const response = await axios.get('http://localhost:4000/api/todasmovimentacoes');
+        res.send(response.data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao buscar dados da API PHP');
+    }
 });
 
-app.get('/categoria', (req, res) => {
+app.get('/movimentacoes', async (req, res) => {
+    try {
+        const response = await axios.get('http://localhost:4000/api/movimentacoes');
+        res.send(response.data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao buscar dados da API PHP');
+    }
+});
+
+/* app.get('/categoria', (req, res) => {
     projetoucsCONN.query('SELECT * FROM categoria', (err, rows) => {
         if (err) throw err;
         res.send(rows);
@@ -53,10 +66,10 @@ app.get('/saldoatual', (req, res) => {
         if (err) throw err;
         res.send(rows);
     });
-});
+}); */
 
 
 /* Servidor rodando */
-app.listen(4000, () => {
-    console.log('API listening on port 4000');
+app.listen(5000, () => {
+    console.log('API listening on port 5000');
 });
