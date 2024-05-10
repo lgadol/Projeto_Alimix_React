@@ -9,56 +9,19 @@ import axios from 'axios';
 
 function Movimentacao() {
     const navigate = useNavigate();
-    const [categoria, setCategoria] = useState([]);
-    const [tipoMovimentacao, setTipoMovimentacao] = useState([]);
     const [transacao, setTransacao] = useState([]);
-    const [usuario, setUsuario] = useState([]);
     const [saldoMensal, setSaldoMensal] = useState([]);
     const [saldoAtual, setSaldoAtual] = useState([]);
-    const [chartData, setChartData] = useState({});
+    const [movimentacoes, setMovimentacoes] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const categoriaData = await fetchCategoria();
-                setCategoria(categoriaData);
+                const response = await axios.get('http://localhost:5000/todasmovimentacoes');
+                console.log(response.data);
+                setMovimentacoes(response.data.movimentacoes);
             } catch (error) {
-                console.error('Erro ao buscar os dados da categoria:', error);
-            }
-
-            try {
-                const tipoMovimentacaoData = await fetchTipoMovimentacao();
-                setTipoMovimentacao(tipoMovimentacaoData);
-            } catch (error) {
-                console.error('Erro ao buscar os dados do tipo de movimentação:', error);
-            }
-
-            try {
-                const transacaoData = await fetchTransacao();
-                setTransacao(transacaoData);
-            } catch (error) {
-                console.error('Erro ao buscar os dados da transação:', error);
-            }
-
-            try {
-                const usuarioData = await fetchUsuario();
-                setUsuario(usuarioData);
-            } catch (error) {
-                console.error('Erro ao buscar os dados do usuário:', error);
-            }
-
-            try {
-                const saldoMensalData = await fetchSaldoMensal();
-                setSaldoMensal(saldoMensalData);
-            } catch (error) {
-                console.error('Erro ao buscar os dados do saldo mensal:', error);
-            }
-
-            try {
-                const saldoAtualData = await fetchSaldoAtual();
-                setSaldoAtual(saldoAtualData);
-            } catch (error) {
-                console.error('Erro ao buscar os dados do saldo atual:', error);
+                console.error('Erro ao buscar todas as movimentações', error);
             }
         }
 
@@ -103,31 +66,26 @@ function Movimentacao() {
                                 <p>CPF</p>
                             </div>
                         </div>
-                        {transacao.map((item, index) => {
-                            const dataDoBanco = item.datahorario;
-                            const data = new Date(dataDoBanco);
-                            const dataFormatada = format(data, 'dd/MM/yy HH:mm');
-                            const categorias = {
-                                0: "Pagamento Recebido :)",
-                                1: "Alimentação",
-                                2: "Abastecimento",
-                                3: "Lazer",
-                                4: "Saúde"
-                            };
+                        {movimentacoes.map((item, index) => {
+                            const dataDoBanco = item.datahora ? item.datahora.date : null;
+                            const data = dataDoBanco ? new Date(dataDoBanco) : null;
+                            const dataFormatada = data ? format(data, 'dd/MM/yy HH:mm') : 'Data não disponível';
+                            const categoriaNome = item.categoria ? item.categoria.nome : 'Categoria não disponível';
+                            const tipoMovimentacaoNome = item.categoria && item.categoria.tipoMovimentacao ? item.categoria.tipoMovimentacao.nome : 'Tipo de Movimentação não disponível';
 
                             return (
                                 <div className='alimix_transacao' key={index}>
-                                    <p>{item.categoria === 0 ? 'Entrada' : 'Saída'}</p>
-                                    <p>{categorias[item.categoria]}</p>
+                                    <p>{categoriaNome}</p>
+                                    <p>{tipoMovimentacaoNome}</p>
                                     <p>{dataFormatada}</p>
-                                    <p>{item.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                                    <p>{item.valor ? item.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'Valor não disponível'}</p>
                                     <p>98765432100</p>
                                 </div>
                             );
                         })}
                     </div>
                     <div className="col">
-                        <strong style={{ fontSize: '15px' }}>Saldo</strong>
+                        {/* <strong style={{ fontSize: '15px' }}>Saldo</strong>
                         <hr />
                         <div className='alimix_saldo'>
                             <p>Saldo Mensal</p>
@@ -152,33 +110,7 @@ function Movimentacao() {
                                     backgroundColor: item.saldo_atual >= 0 ? 'lightgreen' : 'lightcoral',
                                 }}><strong>Saldo Atual: </strong>{item.saldo_atual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                             </div>
-                        ))}
-                        <div className='alimix_saldo'>
-                            <p>Gráfico de compras útlimos 30 dias</p>
-                        </div>
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <div className='alimix_saldo'>
-                            <p>Gráfico de categoria de compras</p>
-                        </div>
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
+                        ))} */}
                     </div>
                 </div>
             </div>

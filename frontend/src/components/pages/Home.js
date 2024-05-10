@@ -86,11 +86,6 @@ function Home() {
                                 Movimentações
                             </button>
                         </Link>
-                        <Link to="/estabelecimentos">
-                            <button className='mov_button'>
-                                Encontrar Estabelecimento
-                            </button>
-                        </Link>
                     </div>
                 </div>
                 <hr />

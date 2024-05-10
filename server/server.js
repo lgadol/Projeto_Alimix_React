@@ -11,7 +11,7 @@ app.get('/todasmovimentacoes', async (req, res) => {
         const response = await axios.get('http://localhost:4000/api/todasmovimentacoes');
         res.send(response.data);
     } catch (error) {
-        console.error(error);
+        console.error('Erro ao buscar todas as movimentações', error);
         res.status(500).send('Erro ao buscar dados da API PHP');
     }
 });
@@ -21,7 +21,7 @@ app.get('/movimentacoes', async (req, res) => {
         const response = await axios.get('http://localhost:4000/api/movimentacoes');
         res.send(response.data);
     } catch (error) {
-        console.error(error);
+        console.error('Erro ao buscar movimentações', error);
         res.status(500).send('Erro ao buscar dados da API PHP');
     }
 });
