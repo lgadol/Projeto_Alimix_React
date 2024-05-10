@@ -26,49 +26,6 @@ app.get('/movimentacoes', async (req, res) => {
     }
 });
 
-/* app.get('/categoria', (req, res) => {
-    projetoucsCONN.query('SELECT * FROM categoria', (err, rows) => {
-        if (err) throw err;
-        res.send(rows);
-    });
-});
-
-app.get('/tipomovimentacao', (req, res) => {
-    projetoucsCONN.query('SELECT * FROM tipomovimentacao', (err, rows) => {
-        if (err) throw err;
-        res.send(rows);
-    });
-});
-
-app.get('/transacao', (req, res) => {
-    projetoucsCONN.query('SELECT * FROM transacao order by datahorario desc', (err, rows) => {
-        if (err) throw err;
-        res.send(rows);
-    });
-});
-
-app.get('/usuario', (req, res) => {
-    projetoucsCONN.query('SELECT * FROM usuario', (err, rows) => {
-        if (err) throw err;
-        res.send(rows);
-    });
-});
-
-app.get('/saldomensal', (req, res) => {
-    projetoucsCONN.query('SELECT * FROM saldomensal', (err, rows) => {
-        if (err) throw err;
-        res.send(rows);
-    });
-});
-
-app.get('/saldoatual', (req, res) => {
-    projetoucsCONN.query('SELECT * FROM saltoatual', (err, rows) => {
-        if (err) throw err;
-        res.send(rows);
-    });
-}); */
-
-
 /* Servidor rodando */
 app.listen(5000, () => {
     console.log('API listening on port 5000');
