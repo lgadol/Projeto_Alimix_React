@@ -2,24 +2,50 @@ import React, { useState, useEffect } from 'react';
 import "./styles.css";
 import Main from '../template/main';
 import { useNavigate } from 'react-router-dom';
-import { fetchCategoria, fetchTipoMovimentacao, fetchTransacao, fetchUsuario, fetchSaldoMensal, fetchSaldoAtual } from '../controllers/Api';
 import { format } from 'date-fns';
-import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
 
 function Movimentacao() {
     const navigate = useNavigate();
-    const [transacao, setTransacao] = useState([]);
-    const [saldoMensal, setSaldoMensal] = useState([]);
-    const [saldoAtual, setSaldoAtual] = useState([]);
+    const [saldosMensais, setSaldosMensais] = useState([]);
     const [movimentacoes, setMovimentacoes] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
             try {
                 const response = await axios.get('http://localhost:5000/todasmovimentacoes');
-                console.log(response.data);
-                setMovimentacoes(response.data.movimentacoes);
+                const movimentacoesData = response.data.movimentacoes;
+
+                // Ordena as movimentações por data
+                movimentacoesData.sort((a, b) => new Date(a.datahora.date) - new Date(b.datahora.date));
+
+                setMovimentacoes(movimentacoesData);
+
+                // Calcula os saldos mensais
+                const grupos = agruparPorMes(movimentacoesData);
+                const novosSaldosMensais = [];
+
+                Object.keys(grupos).forEach(mesAno => {
+                    let entrada = 0;
+                    let saida = 0;
+
+                    grupos[mesAno].forEach(mov => {
+                        const valor = mov.valor;
+                        const tipoMovimentacaoNome = mov.categoria && mov.categoria.tipoMovimentacao ? mov.categoria.tipoMovimentacao.nome : '';
+
+                        if (tipoMovimentacaoNome === 'Entrada') {
+                            entrada += valor;
+                        } else if (tipoMovimentacaoNome === 'Saída') {
+                            saida += valor;
+                        }
+                    });
+
+                    const saldo = entrada - saida;
+
+                    novosSaldosMensais.push({ mesAno, entrada, saida, saldo });
+                });
+
+                setSaldosMensais(novosSaldosMensais);
             } catch (error) {
                 console.error('Erro ao buscar todas as movimentações', error);
             }
@@ -41,6 +67,60 @@ function Movimentacao() {
             };
         }
     }
+
+    let totalEntrada = 0;
+    let totalSaida = 0;
+
+    movimentacoes.forEach(item => {
+        const valor = item.valor;
+        const tipoMovimentacaoNome = item.categoria && item.categoria.tipoMovimentacao ? item.categoria.tipoMovimentacao.nome : '';
+
+        if (tipoMovimentacaoNome === 'Entrada') {
+            totalEntrada += valor;
+        } else if (tipoMovimentacaoNome === 'Saída') {
+            totalSaida += valor;
+        }
+    });
+
+    let saldoAtual = totalEntrada - totalSaida;
+
+    function agruparPorMes(movimentacoes) {
+        const grupos = {};
+
+        movimentacoes.forEach(mov => {
+            const data = new Date(mov.datahora.date);
+            const mesAno = `${data.getMonth() + 1}-${data.getFullYear()}`;
+
+            if (!grupos[mesAno]) {
+                grupos[mesAno] = [];
+            }
+
+            grupos[mesAno].push(mov);
+        });
+
+        return grupos;
+    }
+
+    const grupos = agruparPorMes(movimentacoes);
+
+    Object.keys(grupos).forEach(mesAno => {
+        let entrada = 0;
+        let saida = 0;
+
+        grupos[mesAno].forEach(mov => {
+            const valor = mov.valor;
+            const tipoMovimentacaoNome = mov.categoria && mov.categoria.tipoMovimentacao ? mov.categoria.tipoMovimentacao.nome : '';
+
+            if (tipoMovimentacaoNome === 'Entrada') {
+                entrada += valor;
+            } else if (tipoMovimentacaoNome === 'Saída') {
+                saida += valor;
+            }
+        });
+
+        const saldo = entrada - saida;
+    });
+
 
     return (
         <Main>
@@ -85,32 +165,30 @@ function Movimentacao() {
                         })}
                     </div>
                     <div className="col">
-                        {/* <strong style={{ fontSize: '15px' }}>Saldo</strong>
+                        <strong style={{ fontSize: '15px' }}>Saldo</strong>
                         <hr />
                         <div className='alimix_saldo'>
                             <p>Saldo Mensal</p>
                         </div>
-                        {saldoMensal.map((item, index) => (
+                        {saldosMensais.map((saldoMensal, index) => (
                             <div className='saldo_mensal' key={index} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <p><strong>Entrada: </strong>{item.entrada.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                                <p><strong>Saída: </strong>{item.saida.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                                <p><strong>Saldo Atual: </strong><span style={getStyle(item.saldo_mensal)}>{item.saldo_mensal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
-                                <p><strong>Data: </strong>{item.mes_ano}</p>
+                                <p><strong>Entrada: </strong>{saldoMensal.entrada.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                                <p><strong>Saída: </strong>{saldoMensal.saida.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                                <p><strong>Saldo Atual: </strong><span style={getStyle(saldoMensal.saldo)}>{saldoMensal.saldo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
+                                <p><strong>Data: </strong>{saldoMensal.mesAno}</p>
                             </div>
                         ))}
                         <div className='alimix_saldo'>
                             <p>Saldo Atual</p>
                         </div>
-                        {saldoAtual.map((item, index) => (
-                            <div className='saldo_atual' key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <p><strong>Entrada: </strong>{item.entrada.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                                <p><strong>Saída: </strong>{item.saida.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                                <p style={{
-                                    borderColor: item.saldo_atual >= 0 ? 'green' : 'red',
-                                    backgroundColor: item.saldo_atual >= 0 ? 'lightgreen' : 'lightcoral',
-                                }}><strong>Saldo Atual: </strong>{item.saldo_atual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                            </div>
-                        ))} */}
+                        <div className='saldo_atual' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <p><strong>Entrada: </strong>{totalEntrada.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                            <p><strong>Saída: </strong>{totalSaida.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                            <p style={{
+                                borderColor: saldoAtual >= 0 ? 'green' : 'red',
+                                backgroundColor: saldoAtual >= 0 ? 'lightgreen' : 'lightcoral',
+                            }}><strong>Saldo Atual: </strong>{saldoAtual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                        </div>
                     </div>
                 </div>
             </div>

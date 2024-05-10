@@ -4,7 +4,7 @@ import Main from '../template/main';
 import { useNavigate, Link } from 'react-router-dom';
 import { fetchCategoria, fetchTipoMovimentacao, fetchTransacao, fetchUsuario, fetchSaldoMensal, fetchSaldoAtual } from '../controllers/Api';
 import { format } from 'date-fns';
-import imgCard from "../img/card.jpeg";
+import imgCard from "../img/alimixcard.jpg";
 import imgLogo from "../img/logo.png";
 
 
